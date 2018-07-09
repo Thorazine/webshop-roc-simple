@@ -10,23 +10,23 @@ try {
 		(:first_name, :suffix_name, :last_name, :country, :city, :street, :street_number, :street_suffix, :zipcode, :email, :password, :created_at, :updated_at)';
 
 	$data = [
-		'first_name' => $_POST['first_name'],
-		'suffix_name' => $_POST['suffix_name'],
-		'last_name' => $_POST['last_name'],
+		'first_name' => standardizeName($_POST['first_name']),
+		'suffix_name' => trim($_POST['suffix_name']),
+		'last_name' => standardizeName($_POST['last_name']),
 		'country' => $_POST['country'],
-		'city' => $_POST['city'],
-		'street' => $_POST['street'],
+		'city' => standardizeName($_POST['city']),
+		'street' => standardizeName($_POST['street']),
 		'street_number' => $_POST['street_number'],
-		'street_suffix' => $_POST['street_suffix'],
+		'street_suffix' => trim($_POST['street_suffix']),
 		'zipcode' => standardizePostcode($_POST['zipcode']),
-		'email' => $_POST['email'],
-		'password' => $_POST['password'],
-		'created_at' => $_POST['created_at'],
-		'updated_at' => $_POST['updated_at'],
+		'email' => strtolower(trim($_POST['email'])),
+		'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
+		'created_at' => date('Y-m-d H:i:s'),
+		'updated_at' => date('Y-m-d H:i:s'),
 	];
 
-	$products = $connection->prepare($query); // query voorbereiden
-	$products->execute($data);
+	$user = $connection->prepare($query); // query voorbereiden
+	$user->execute($data);
 
 	$userId = $connection->lastInsertId();
 
@@ -57,3 +57,11 @@ function standardizePostcode($postcode)
 {
 	return strtoupper(chunk_split($postcode, 4, ' '));
 }
+
+
+function standardizeName($string)
+{
+	return ucword(trim($string));
+}
+
+

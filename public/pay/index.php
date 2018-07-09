@@ -1,8 +1,6 @@
 <?php
 	require '../../boot.php';
 
-	$errors = [];
-
 	if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		$variables = [
