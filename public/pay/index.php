@@ -22,10 +22,6 @@
 
 		if(count($errors) == 0) {
 
-			require '../../app/payment/new6ab.php';
-
-			dd('Joepie! We kunnen betalen!');
-
 			// user opslaan
 			// order aanmaken
 			// product_order opslaan (loop)
@@ -33,14 +29,8 @@
 			// order updaten met betaal informatie
 			// doorsturen naar betaling geslaagd/mislukt pagina
 
+			require '../../app/payment/new.php';
 		}
-	}
-
-	// dd($_POST);
-
-	function errors()
-	{
-
 	}
 
 	function value($key)
@@ -53,7 +43,6 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="title" content="">
 	<meta name="description" content="">
 	<title>Betalen</title>
 
@@ -71,6 +60,9 @@
 		<?php if(@$errors) { ?>
 			<div class="alert alert-danger">
 				Oeps, niet alles is correct ingevuld.
+				<?php if(@$errors['main']) { ?>
+					<br><?php echo $errors['main']; ?>
+				<?php } ?>
 			</div>
 		<?php } ?>
 

@@ -2,6 +2,7 @@
 
 try {
 	$connection = db();
+
 	$connection->beginTransaction();
 
 	$query = 'INSERT INTO `users` (first_name, suffix_name, last_name, country, city, street, street_number, street_suffix, zipcode, email, password, created_at, updated_at)
@@ -24,11 +25,64 @@ try {
 		'updated_at' => date('Y-m-d H:i:s')
 	];
 
+	// preparing user query
+    $user = $connection->prepare($query);
+
+    $user->execute($data);
+
+    // calls for the last created userID
+    $userId = $connection->lastInsertId();
+
+    // create order
+    $query = 'INSERT INTO `orders`
+    	(amount, payment_status, user_id, created_at, updated_at)
+    	VALUES
+    	(:amount, :payment_status, :user_id, :created_at, :updated_at)';
+
+    $data = [
+        'amount' => $_SESSION['cart']['total'],
+        'payment_status' => 'open',
+        'user_id' => $userId,
+        'created_at' => date('Y-m-d H:i:s'),
+        'updated_at' => date('Y-m-d H:i:s'),
+    ];
+
+    // preparing order query
+    $order = $connection->prepare($query);
+
+    $order->execute($data);
+
+    $orderId = $connection->lastInsertId();
+
+    // create product_order loopen
+    $query = 'INSERT INTO `orders_products`
+    	(order_id, product_id, price, quantity, created_at, updated_at)
+    	VALUES
+    	(:order_id, :product_id, :price, :quantity, :created_at, :updated_at)';
+
+    foreach ($_SESSION['cart']['products'] as $id => $product) {
+        $data = [
+            'order_id' => $orderId,
+            'product_id' => $product['id'],
+            'price' => $product['price'],
+            'quantity' => $product['quantity'],
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ];
+
+        // preparing order_products query
+        $orders_products = $connection->prepare($query);
+
+        $orders_products->execute($data);
+    }
+
 
 	$connection->commit();
 }
 catch (Exception $e) {
 	$connection->rollBack();
+
+	$errors['main'] = $e->getMessage();
 }
 
 

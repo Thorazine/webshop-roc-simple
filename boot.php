@@ -2,7 +2,7 @@
 
 session_start();
 
-require 'vendor/autoload.php';
+// require 'vendor/autoload.php';
 require 'classes/Cart.php';
 require 'classes/Http.php';
 // require 'classes/Crypt.php';

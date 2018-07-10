@@ -19,7 +19,6 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="title" content="">
 	<meta name="description" content="">
 	<title>Webshop - product</title>
 

@@ -30,9 +30,8 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<meta name="title" content="<?php echo $product['seo_title']; ?>">
 	<meta name="description" content="<?php echo $product['seo_description']; ?>">
-	<title><?php echo $product['title']; ?></title>
+	<title><?php echo $product['seo_title']; ?></title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
